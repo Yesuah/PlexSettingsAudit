@@ -3,9 +3,9 @@ services:
     build: ./api
     ports:
       - "8000:8000"
-    secrets:
-      - plex_url
-      - plex_token
+    environment:
+      - PLEX_URL=${PLEX_URL}
+      - PLEX_TOKEN=${PLEX_TOKEN}
 
   ui:
     build: ./ui
@@ -13,9 +13,3 @@ services:
       - "3000:80"
     depends_on:
       - api
-
-secrets:
-  plex_url:
-    file: ./secrets/plex_url.txt
-  plex_token:
-    file: ./secrets/plex_token.txt

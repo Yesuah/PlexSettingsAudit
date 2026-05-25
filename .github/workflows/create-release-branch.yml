@@ -1,0 +1,41 @@
+name: Create release branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-release-branch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine next version
+        id: version
+        run: |
+          latest=$(git branch -r --list 'origin/release/*' \
+            | sed 's|.*origin/release/||' \
+            | sort -V \
+            | tail -1)
+
+          if [ -z "$latest" ]; then
+            next="1.0.0"
+          else
+            major=$(echo "$latest" | cut -d. -f1)
+            minor=$(echo "$latest" | cut -d. -f2)
+            patch=$(echo "$latest" | cut -d. -f3)
+            next="$major.$minor.$((patch + 1))"
+          fi
+
+          echo "version=$next" >> "$GITHUB_OUTPUT"
+
+      - name: Create release branch
+        run: |
+          git checkout -b release/${{ steps.version.outputs.version }}
+          git push origin release/${{ steps.version.outputs.version }}

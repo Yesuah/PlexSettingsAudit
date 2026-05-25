@@ -1,0 +1,17 @@
+name: Protect main
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-source-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Only allow merges from dev
+        if: github.head_ref != 'dev'
+        run: |
+          echo "PRs to main are only allowed from the dev branch."
+          echo "This PR is coming from: ${{ github.head_ref }}"
+          exit 1

@@ -1,0 +1,23 @@
+# Secrets — never commit
+secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+dist/
+.mypy_cache/
+.pytest_cache/
+
+# Env files
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Misc local files
+convo.zip
+PlexSettingsAudit/

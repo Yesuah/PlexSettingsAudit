@@ -1,0 +1,21 @@
+services:
+  api:
+    build: ./api
+    ports:
+      - "8000:8000"
+    secrets:
+      - plex_url
+      - plex_token
+
+  ui:
+    build: ./ui
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+
+secrets:
+  plex_url:
+    file: ./secrets/plex_url.txt
+  plex_token:
+    file: ./secrets/plex_token.txt
